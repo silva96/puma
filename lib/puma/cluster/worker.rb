@@ -60,7 +60,12 @@ module Puma
         server = @server ||= start_server
         rescue Exception => e
           log "! Unable to start worker"
-          log e
+          log "class: #{e.class}"
+          log "  msg: #{e.message}"
+          if e.respond_to? :requirement
+            log "gem name: #{e.name}"
+            log "     req: #{e.requirement}"
+          end
           log e.backtrace.join("\n    ")
           exit 1
         end
